@@ -1,0 +1,163 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="博客管理"><meta name="keywords" content="博客"><meta name="author" content="yuanshan"><meta name="copyright" content="yuanshan"><title>博客管理 | Yuanshan's Studio</title><link rel="shortcut icon" href="/star1.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容:${query}"}},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  hexoVersion: '5.4.0'
+} </script><meta name="generator" content="Hexo 5.4.0"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="切换文章详情">切换站点概览</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://seuppcdn01.1x.com/images/user/c0577b8beede9cbd49294c0be2b1a702-hd2.jpg"></div><div class="author-info__name text-center">yuanshan</div><div class="author-info__description text-center"></div><div class="follow-button"><a target="_blank" rel="noopener" href="https://www.baidu.com/">Follow Me</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">文章</span><span class="pull-right">31</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">标签</span><span class="pull-right">21</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">分类</span><span class="pull-right">3</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://cn.vuejs.org/">Vue</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://react.docschina.org/">React</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://element.eleme.cn/#/zh-CN">Element-UI</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://zh.javascript.info/">现代Javascript教程</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://github.com/">github</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://www.iconfont.cn/">iconfont</a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://seuppcdn01.1x.com/images/user/93d5a195f6171258ef8acf27aaf73838-hd4.jpg)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">Yuanshan's Studio</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">主页</a><a class="site-page" href="/archives">归档</a><a class="site-page" href="/tags">标签</a><a class="site-page" href="/categories">分类</a><a class="site-page" href="/gallery">相册</a></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search"></i><span> 搜索</span></a></span></div><div id="post-info"><div id="post-title">博客管理</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2021-06-07</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><div class="post-meta-wordcount"><span>字数总计: </span><span class="word-count">1.4k</span><span class="post-meta__separator">|</span><span>阅读时长: 4 分钟</span></div></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><p>HEXO是一个较为流行的博客框架，本博客就是基于这个框架搭建，具体的搭建教程可见B站up主CodeSheep的<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Yb411a7ty?from=search&seid=13159882610131420769">教程</a>。另外，此博客所用主题为melody，个人比较喜欢这样简约中又略带动效的风格，这篇文章主要用来记录我在搭建博客过程中的一些使用技巧与心得，若文中有问题或错误希望各位指出，与君共勉。</p>
+<p>下面是一些关于搭建完成后的文件说明：</p>
+<p>当搭建完成博客后，你所有关于博客的文件都会存在一个你自己在搭建过程中建立的文件夹中，例如我的文件夹</p>
+<p><img src="/2021/06/07/%E5%8D%9A%E5%AE%A2%E7%AE%A1%E7%90%86/01.jpg" alt="博客所在主文件夹"></p>
+<p>如上图所示，所有的关于hexo博客文件的配置均在<code>_config.yml</code>中，而涉及到melody主题的配置则在<code>_config.melody.yml</code>中，注意与文件名机制不同，此博客所使用的主题具体文件并不在themes中，而是在<code>node_modouls</code>文件夹中，如下图<img src="/2021/06/07/%E5%8D%9A%E5%AE%A2%E7%AE%A1%E7%90%86/02.png" alt="主题文件夹"></p>
+<p>关于博客文章具体的所有配置文件都存在下面这个文件夹中</p>
+<p><img src="/2021/06/07/%E5%8D%9A%E5%AE%A2%E7%AE%A1%E7%90%86/03.png" alt="主题文件夹"></p>
+<p>如图所示<code>_post</code>存放我们的所有文章，<code>404</code>存放配置404页面的文件，<code>categories</code>存放文章分类的配置文件，<code>gallery</code>存放博客相册配置文件，<code>slide</code>存放博客滑动的配置文件，<code>tags</code>存放博客文章标签配置文件。</p>
+<p>介绍完主要的文件路径，我们来说说对博客的日常管理操作。在平时使用hexo博客时，我们常用到一下以下几个命令：</p>
+<ol>
+<li>首先确保我们进入的是博客所在文件夹即上面第一张图的<code>blog</code>文件夹路径下，之后在路径栏输入cmd，回车后会弹出该路径下的命令框界面，我们对博客的所有操作都是在当前这个路径下进行；</li>
+<li>具体命令：</li>
+</ol>
+<p><strong>init</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init [folder]</span><br></pre></td></tr></table></figure>
+
+<p>新建一个网站。如果没有设置 <code>folder</code> ，Hexo 默认在目前的文件夹建立网站。</p>
+<p>本命令相当于执行了以下几步：</p>
+<ol>
+<li>Git clone <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-starter">hexo-starter</a> 和 <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-theme-landscape">hexo-theme-landscape</a> 主题到当前目录或指定目录。</li>
+<li>使用 <a target="_blank" rel="noopener" href="https://classic.yarnpkg.com/lang/en/">Yarn 1</a>、<a target="_blank" rel="noopener" href="https://pnpm.js.org/">pnpm</a> 或 <a target="_blank" rel="noopener" href="https://docs.npmjs.com/cli/install">npm</a> 包管理器下载依赖（如有已安装多个，则列在前面的优先）。npm 默认随 <a target="_blank" rel="noopener" href="https://hexo.io/docs/#Install-Node-js">Node.js</a> 安装。</li>
+</ol>
+<p><strong>new</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo <span class="keyword">new</span> [layout] &lt;title&gt;</span><br></pre></td></tr></table></figure>
+
+<p>新建一篇文章。如果没有设置 <code>layout</code> 的话，默认使用 <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/configuration">_config.yml</a> 中的 <code>default_layout</code> 参数代替。如果标题包含空格的话，请使用引号括起来。注意此处的<code>new</code>可以简写为<code>n</code></p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-p</code>, <code>--path</code></td>
+<td align="left">自定义新文章的路径</td>
+</tr>
+<tr>
+<td align="left"><code>-r</code>, <code>--replace</code></td>
+<td align="left">如果存在同名文章，将其替换</td>
+</tr>
+<tr>
+<td align="left"><code>-s</code>, <code>--slug</code></td>
+<td align="left">文章的 Slug，作为新文章的文件名和发布后的 URL</td>
+</tr>
+</tbody></table>
+<p>默认情况下，Hexo 会使用文章的标题来决定文章文件的路径。对于独立页面来说，Hexo 会创建一个以标题为名字的目录，并在目录中放置一个 <code>index.md</code> 文件。你可以使用 <code>--path</code> 参数来覆盖上述行为、自行决定文件的目录：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page --path about/me &quot;About me&quot;</span><br></pre></td></tr></table></figure>
+
+<p>以上命令会创建一个 <code>source/about/me.md</code> 文件，同时 Front Matter 中的 title 为 <code>&quot;About me&quot;</code></p>
+<p>注意！title 是必须指定的！如果你这么做并不能达到你的目的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page --path about/me</span><br></pre></td></tr></table></figure>
+
+<p>此时 Hexo 会创建 <code>source/_posts/about/me.md</code>，同时 <code>me.md</code> 的 Front Matter 中的 title 为 <code>&quot;page&quot;</code>。这是因为在上述命令中，hexo-cli 将 <code>page</code> 视为指定文章的标题、并采用默认的 <code>layout</code>。</p>
+<p><strong>generate</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>生成静态文件。可以简写为<code>g</code></p>
+<table>
+<thead>
+<tr>
+<th align="left">选项</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-d</code>, <code>--deploy</code>&nbsp; &nbsp; &nbsp;</td>
+<td align="left">文件生成后立即部署网站</td>
+</tr>
+<tr>
+<td align="left"><code>-w</code>, <code>--watch</code></td>
+<td align="left">监视文件变动</td>
+</tr>
+<tr>
+<td align="left"><code>-b</code>, <code>--bail</code></td>
+<td align="left">生成过程中如果发生任何未处理的异常则抛出异常</td>
+</tr>
+<tr>
+<td align="left"><code>-f</code>, <code>--force</code></td>
+<td align="left">强制重新生成文件 Hexo 引入了差分机制，如果 <code>public</code> 目录存在，那么 <code>hexo g</code> 只会重新生成改动的文件。 使用该参数的效果接近 <code>hexo clean &amp;&amp; hexo generate</code></td>
+</tr>
+<tr>
+<td align="left"><code>-c</code>, <code>--concurrency</code>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td align="left">最大同时生成文件的数量，默认无限制</td>
+</tr>
+</tbody></table>
+<p><strong>server</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo server</span><br></pre></td></tr></table></figure>
+
+<p>启动服务器。默认情况下，访问网址为： <code>http://localhost:4000/</code>。</p>
+<table>
+<thead>
+<tr>
+<th align="left">选项</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-p</code>, <code>--port</code></td>
+<td align="left">重设端口</td>
+</tr>
+<tr>
+<td align="left"><code>-s</code>, <code>--static</code></td>
+<td align="left">只使用静态文件</td>
+</tr>
+<tr>
+<td align="left"><code>-l</code>, <code>--log</code></td>
+<td align="left">启动日记记录，使用覆盖记录格式</td>
+</tr>
+</tbody></table>
+<p><strong>deploy</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo deployj</span><br></pre></td></tr></table></figure>
+
+<p>部署网站。</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-g</code>, <code>--generate</code></td>
+<td align="left">部署之前预先生成静态文件</td>
+</tr>
+</tbody></table>
+<p>该命令可以简写为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>clean</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br></pre></td></tr></table></figure>
+
+<p>清除缓存文件 (<code>db.json</code>) 和已生成的静态文件 (<code>public</code>)。</p>
+<p>在某些情况（尤其是更换主题后），如果发现您对站点的更改无论如何也不生效，您可能需要运行该命令。</p>
+<p>一般顺序为：hexo n “” -&gt; 编辑文章 -&gt; hexo clean -&gt; hexo g -&gt; hexo s -&gt; 查看本地页面并修改 -&gt; hexo d(通常这一步需要多尝试几次，不知道是不是外网原因还时github不稳定)</p>
+<p>以上就是我平时的一些基本使用操作！</p>
+<p>此外，是一些使用hexo的小技巧分享：</p>
+<p><strong>图片引用方法</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![’这张照片在文章中的名称‘](./<span class="string">&#x27;这篇文章的文件名称(同名文件夹)&#x27;</span>/<span class="string">&#x27;放在文件夹下的照片名称，带后缀&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>举例：<img src="/2021/06/07/%E5%8D%9A%E5%AE%A2%E7%AE%A1%E7%90%86/test.jpg" alt="照片1"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![照片<span class="number">1</span>](./博客管理/test.jpg)</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意注意！！</strong></p>
+<p>引入照片时，在markdown中文件路径中的斜杠是<code>\</code>，这种写法在markdown本地可以显示图片，但是推到博客上就无法显示，想要正确显示图片需要将路径都换成<code>/</code>标志！！</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">yuanshan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2021/06/07/博客管理/">http://example.com/2021/06/07/博客管理/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com">Yuanshan's Studio</a>！</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8D%9A%E5%AE%A2/">博客</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2021/06/10/B%E7%AB%99%E5%A4%9A%E5%AA%92%E4%BD%93%E8%B5%84%E6%BA%90/"><i class="fa fa-chevron-left">  </i><span>B站多媒体资源</span></a></div><div class="next-post pull-right"><a href="/2021/06/07/%E8%B5%84%E6%BA%90%E6%B1%87%E6%80%BB/"><span>资源汇总</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(https://seuppcdn01.1x.com/images/user/93d5a195f6171258ef8acf27aaf73838-hd4.jpg)"><div class="layout" id="footer"><div class="copyright">&copy;2021 - 2022 By yuanshan</div><div class="framework-info"><span>驱动 - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="footer_custom_text">🍉🍉🍉欢迎来到我的<a target="_blank" rel="noopener" href="https://yuanshan7.github.io/">个人博客</a>!🍉🍉🍉</div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.0"></script><script src="/js/fancybox.js?version=1.9.0"></script><script src="/js/sidebar.js?version=1.9.0"></script><script src="/js/copy.js?version=1.9.0"></script><script src="/js/fireworks.js?version=1.9.0"></script><script src="/js/transition.js?version=1.9.0"></script><script src="/js/scroll.js?version=1.9.0"></script><script src="/js/head.js?version=1.9.0"></script><script src="/js/search/local-search.js"></script><script id="ribbon" src="/js/third-party/canvas-ribbon.js" size="150" alpha="0.6" zIndex="-1" data-click="false"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>

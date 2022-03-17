@@ -1,0 +1,288 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="浏览器机制"><meta name="keywords" content="浏览器"><meta name="author" content="yuanshan"><meta name="copyright" content="yuanshan"><title>浏览器机制 | Yuanshan's Studio</title><link rel="shortcut icon" href="/star1.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容:${query}"}},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  hexoVersion: '5.4.0'
+} </script><meta name="generator" content="Hexo 5.4.0"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="切换文章详情">切换站点概览</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86"><span class="toc-text">背景知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CPU"><span class="toc-text">CPU</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GPU"><span class="toc-text">GPU</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%9E%B6%E6%9E%84"><span class="toc-text">计算机架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B"><span class="toc-text">进程与线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%EF%BC%88IPC%EF%BC%89"><span class="toc-text">进程间通信（IPC）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chrome%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9E%B6%E6%9E%84"><span class="toc-text">Chrome浏览器架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AE%B9"><span class="toc-text">进程工作内容</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E8%BF%9B%E7%A8%8B%EF%BC%88Browser-process%EF%BC%89"><span class="toc-text">浏览器进程（Browser process）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E8%BF%9B%E7%A8%8B%EF%BC%88Renderer-process%EF%BC%89"><span class="toc-text">渲染进程（Renderer process）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E8%BF%9B%E7%A8%8B%EF%BC%88Plugin-process%EF%BC%89"><span class="toc-text">插件进程（Plugin process）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GPU-%E8%BF%9B%E7%A8%8B%EF%BC%88GPU-process%EF%BC%89"><span class="toc-text">GPU 进程（GPU process）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%9E%B6%E6%9E%84%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="toc-text">多进程架构的优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%A2%E5%90%91%E6%9C%8D%E5%8A%A1%E7%9A%84%E6%9E%B6%E6%9E%84"><span class="toc-text">面向服务的架构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E8%BF%9B%E7%A8%8B"><span class="toc-text">浏览器进程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E6%AC%A1%E8%AE%BF%E9%97%AE"><span class="toc-text">一次访问</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-1%EF%BC%9A%E8%BE%93%E5%85%A5%E5%A4%84%E7%90%86"><span class="toc-text">Step 1：输入处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-2%EF%BC%9A%E8%AE%BF%E9%97%AE%E5%BC%80%E5%A7%8B"><span class="toc-text">Step 2：访问开始</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-3%EF%BC%9A%E5%A4%84%E7%90%86%E5%93%8D%E5%BA%94%E6%95%B0%E6%8D%AE"><span class="toc-text">Step 3：处理响应数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-4%EF%BC%9A%E6%B8%B2%E6%9F%93%E8%BF%87%E7%A8%8B"><span class="toc-text">Step 4：渲染过程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-5%EF%BC%9A%E6%8F%90%E4%BA%A4%E8%AE%BF%E9%97%AE"><span class="toc-text">Step 5：提交访问</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Extra-Step%EF%BC%9A%E5%8A%A0%E8%BD%BD%E5%AE%8C%E6%AF%95"><span class="toc-text">Extra Step：加载完毕</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Service-worker"><span class="toc-text">Service worker</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E9%A2%84%E5%8A%A0%E8%BD%BD"><span class="toc-text">访问预加载</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E8%BF%9B%E7%A8%8B%EF%BC%88%E6%B5%8F%E8%A7%88%E5%99%A8%E5%86%85%E6%A0%B8%EF%BC%89"><span class="toc-text">渲染进程（浏览器内核）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GUI%E6%B8%B2%E6%9F%93%E7%BA%BF%E7%A8%8B"><span class="toc-text">GUI渲染线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS%E5%BC%95%E6%93%8E%E7%BA%BF%E7%A8%8B"><span class="toc-text">JS引擎线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E8%A7%A6%E5%8F%91%E7%BA%BF%E7%A8%8B"><span class="toc-text">事件触发线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6%E8%A7%A6%E5%8F%91%E5%99%A8%E7%BA%BF%E7%A8%8B"><span class="toc-text">定时触发器线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5http%E8%AF%B7%E6%B1%82%E7%BA%BF%E7%A8%8B"><span class="toc-text">异步http请求线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E8%BF%9B%E7%A8%8B%E6%B8%B2%E6%9F%93%E9%A1%B5%E9%9D%A2%E7%9A%84%E5%86%85%E5%AE%B9"><span class="toc-text">渲染进程渲染页面的内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90%E8%BF%87%E7%A8%8B"><span class="toc-text">解析过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#DOM-%E7%9A%84%E5%88%9B%E5%BB%BA"><span class="toc-text">DOM 的创建</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%9D%E5%A4%96%E8%B5%84%E6%BA%90%E7%9A%84%E5%8A%A0%E8%BD%BD"><span class="toc-text">额外资源的加载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JavaScript-%E4%BC%9A%E9%98%BB%E5%A1%9E%E8%BD%AC%E5%8C%96%E8%BF%87%E7%A8%8B"><span class="toc-text">JavaScript 会阻塞转化过程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%91%8A%E8%AF%89%E6%B5%8F%E8%A7%88%E5%99%A8%E8%A6%81%E5%A6%82%E4%BD%95%E5%8A%A0%E8%BD%BD%E8%B5%84%E6%BA%90"><span class="toc-text">告诉浏览器要如何加载资源</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%B7%E5%BC%8F%E8%AE%A1%E7%AE%97%EF%BC%88Style-calculation%EF%BC%89"><span class="toc-text">样式计算（Style calculation）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%83%E5%B1%80%EF%BC%88layout%EF%BC%89"><span class="toc-text">布局（layout）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%EF%BC%88Paint%EF%BC%89"><span class="toc-text">绘制（Paint）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%88%E6%88%90%EF%BC%88Compositing%EF%BC%89"><span class="toc-text">合成（Compositing）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B1%82%EF%BC%88Layer%EF%BC%89"><span class="toc-text">层（Layer）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%85%E6%A0%BC%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%90%88%E6%88%90%E7%BA%BF%E7%A8%8B"><span class="toc-text">栅格线程与合成线程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%8E%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84%E8%A7%92%E5%BA%A6%E7%9C%8B%E4%BA%8B%E4%BB%B6"><span class="toc-text">从浏览器的角度看事件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%88%E6%88%90%E7%BA%BF%E7%A8%8B%E5%AF%B9%E4%BA%8B%E4%BB%B6%E7%9A%84%E5%A4%84%E7%90%86"><span class="toc-text">合成线程对事件的处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E4%BA%8B%E4%BB%B6%E7%9B%AE%E6%A0%87"><span class="toc-text">查找事件目标</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%8F%E5%B0%91%E5%8F%91%E9%80%81%E7%BB%99%E4%B8%BB%E7%BA%BF%E7%A8%8B%E7%9A%84%E4%BA%8B%E4%BB%B6%E6%95%B0%E9%87%8F"><span class="toc-text">减少发送给主线程的事件数量</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://seuppcdn01.1x.com/images/user/c0577b8beede9cbd49294c0be2b1a702-hd2.jpg"></div><div class="author-info__name text-center">yuanshan</div><div class="author-info__description text-center"></div><div class="follow-button"><a target="_blank" rel="noopener" href="https://www.baidu.com/">Follow Me</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">文章</span><span class="pull-right">31</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">标签</span><span class="pull-right">21</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">分类</span><span class="pull-right">3</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://cn.vuejs.org/">Vue</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://react.docschina.org/">React</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://element.eleme.cn/#/zh-CN">Element-UI</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://zh.javascript.info/">现代Javascript教程</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://github.com/">github</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://www.iconfont.cn/">iconfont</a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://seuppcdn01.1x.com/images/user/93d5a195f6171258ef8acf27aaf73838-hd4.jpg)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">Yuanshan's Studio</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">主页</a><a class="site-page" href="/archives">归档</a><a class="site-page" href="/tags">标签</a><a class="site-page" href="/categories">分类</a><a class="site-page" href="/gallery">相册</a></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search"></i><span> 搜索</span></a></span></div><div id="post-info"><div id="post-title">浏览器机制</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2021-06-03</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><div class="post-meta-wordcount"><span>字数总计: </span><span class="word-count">11.1k</span><span class="post-meta__separator">|</span><span>阅读时长: 33 分钟</span></div></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h2 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h2><h3 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h3><p>CPU 和 GPU 作为计算机中最重要的两个计算单元直接决定了计算性能</p>
+<p><img src="https://static001.geekbang.org/infoq/94/9407812940681a84a4b4661b551da819.png" alt="img"></p>
+<p>CPU 是计算机的大脑，负责处理各种不同的任务。在过去，大多数 CPU 是单芯片的，核心被安置在同一个芯片上。更新的 CPU 可以支持多核心，运算能力大大加强。而最新的的 cpu 已经达到 10 核心 20 线程数的能力了。</p>
+<h3 id="GPU"><a href="#GPU" class="headerlink" title="GPU"></a>GPU</h3><p><img src="https://static001.geekbang.org/infoq/8f/8fc555c4a70f7f844dbb34edec74cf1f.png" alt="img"></p>
+<p>GPU 是另一个计算机的组成部分，与 CPU 不同，GPU 更擅长利用多核心同时处理单一的任务。像命名那样，GPU 最初被用于处理图像。这就是为什么使用 GPU 可以更快、更顺畅的渲染页面内容。随着 GPU 的发展，越来越多的计算任务也可以使用 GPU 来处理。甚至有人说 GPU 是人工智能的大功臣，可见 GPU 已经不再仅用于图像处理上了。</p>
+<h3 id="计算机架构"><a href="#计算机架构" class="headerlink" title="计算机架构"></a>计算机架构</h3><p><img src="https://static001.geekbang.org/infoq/2a/2af38ddf296b92cd6bbbf97322774c33.png" alt="img"></p>
+<p>我们可以把计算机自下而上分成三层：硬件、操作系统和应用。有了操作系统的存在，上层运行的应用可以使用操作系统提供的能力使用硬件资源而不会直接访问硬件资源。</p>
+<h3 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h3><p><img src="https://static001.geekbang.org/infoq/97/97afac83d32e43397ea484653bb6b1ec.png" alt="img"></p>
+<p>一个进程是应用正在运行的程序。而线程是进程中更小的一部分。当应用被启动，进程就被创建出来。程序可以创建线程来帮助其工作。操作系统会为进程分配私有的内存空间以供使用，当关闭程序时，这段私有的内存也会被释放。其实还有比线程更小的存在就是<strong>协程，而协成是运行在线程中更小的单位。async/await 就是基于协程实现的。</strong></p>
+<h3 id="进程间通信（IPC）"><a href="#进程间通信（IPC）" class="headerlink" title="进程间通信（IPC）"></a>进程间通信（IPC）</h3><p><img src="https://static001.geekbang.org/infoq/b8/b8306ca61a00c7ccfa68476e61a0b105.png" alt="img"></p>
+<p>一个进程可以让操作系统开启另一个进程处理不同的任务。当两个进程需要通信时，可以时用 IPC(Inter Process Communication)。</p>
+<p>多数程序被设计成使用 IPC 来进行进程间的通信，好处在于当一个进程给另一个进程发消息而没有回应时，并不影响当前的进程继续工作。</p>
+<h2 id="Chrome浏览器架构"><a href="#Chrome浏览器架构" class="headerlink" title="Chrome浏览器架构"></a>Chrome浏览器架构</h2><p>借助进程和线程，浏览器可以被设计成单进程、多线程架构，或者利用 IPC 实现多进程、多线程架构。</p>
+<p><img src="https://static001.geekbang.org/infoq/23/23162955642bb163b16a5d08bdbb3288.png" alt="img"></p>
+<p>这里我们以 Chrome 多进程架构介绍，在 Chrome 中存在着不同种类型的进程，它们各司其职。</p>
+<p>浏览器进程：渲染进程、插件进程、GPU进程以及其他实用进程</p>
+<p><img src="https://static001.geekbang.org/infoq/89/898bb4e5c529e5d3280b6787a7d261a3.png" alt="img"></p>
+<p>浏览器进程作为 Chrome 中最核心的进程，管理着 Chrome 中的其他进程，而渲染进程则负责渲染不同的站点。</p>
+<h3 id="进程工作内容"><a href="#进程工作内容" class="headerlink" title="进程工作内容"></a>进程工作内容</h3><p>下面将分别解释各个进程在浏览器中负责的模块</p>
+<p><img src="https://static001.geekbang.org/infoq/7b/7bc84e5abe039f836a0af8002d4a63fd.png" alt="img"></p>
+<h4 id="浏览器进程（Browser-process）"><a href="#浏览器进程（Browser-process）" class="headerlink" title="浏览器进程（Browser process）"></a>浏览器进程（Browser process）</h4><p>浏览器的主进程（负责协调，主控），只有一个，负责管理浏览器本身，作用有：</p>
+<ul>
+<li>负责浏览器的界面显示，与用户交互，包括地址栏、书签、前进和后退按钮等</li>
+<li>负责各个页面的管理，创建和销毁或是调度其它进程</li>
+<li>将渲染进程得到的内存中的<code>Bitmap</code>,绘制到用户界面上</li>
+<li>网络资源的管理，网络请求、文件访问，下载等</li>
+</ul>
+<h4 id="渲染进程（Renderer-process）"><a href="#渲染进程（Renderer-process）" class="headerlink" title="渲染进程（Renderer process）"></a>渲染进程（Renderer process）</h4><p>渲染进程，即浏览器的内核，内部是多线程的，负责站点的渲染，其中也包括 JavaScript 代码的运行，web worker 的管理等。默认每个<code>Tab</code>页面一个进程，互不影响。主要作用为：页面渲染，脚本执行，事件处理等。</p>
+<h4 id="插件进程（Plugin-process）"><a href="#插件进程（Plugin-process）" class="headerlink" title="插件进程（Plugin process）"></a>插件进程（Plugin process）</h4><p>插件进程负责为浏览器提供各种额外的插件功能，每种类型的插件对应一个进程，仅当使用该插件时才创建，例如逝去的flash。</p>
+<h4 id="GPU-进程（GPU-process）"><a href="#GPU-进程（GPU-process）" class="headerlink" title="GPU 进程（GPU process）"></a>GPU 进程（GPU process）</h4><p>GPU 进程最多一个，负责提供成像的功能。其实，Chrome 刚开始发布的时候是没有 GPU 进程的。而 GPU 的使用初衷是为了实现 3D CSS 的效果，只是随后网页、Chrome 的 UI 界面都选择采用 GPU 来绘制，这使得 GPU 成为浏览器普遍的需求。最后，Chrome 在其多进程架构上也引入了 GPU 进程。</p>
+<p>当然还有其他像扩展进程或工具进程等其他进程，可以在 Chrome 的<code>更多工具-&gt;任务管理器</code>面板中查看，面板中列出了运行的进程和其占用的 CPU、内存情况。</p>
+<h3 id="多进程架构的优势"><a href="#多进程架构的优势" class="headerlink" title="多进程架构的优势"></a>多进程架构的优势</h3><ul>
+<li>避免单个网页崩溃影响整个浏览器</li>
+<li>避免第三方插件崩溃影响整个浏览器</li>
+<li>多进程充分利用多核优势</li>
+<li>方便使用沙盒模型隔离插件等进程，提高浏览器稳定性</li>
+</ul>
+<p>当我们访问一个站点时，渲染进程会负责运行站点的代码，渲染站点的页面，同时响应用户的交互动作，当我们在 Chrome 中打开三个页签同时访问三个站点时，如果其中一个没有响应，我们可以关闭它然后使用其他的页签，这是因为 Chrome 为每个站点创建一个独立的渲染进程，专门处理当前站点的渲染工作。如果所有的页面运行在同一个进程中，当有一个页面没有响应时，所有的页面就都卡住了。</p>
+<p><img src="https://static001.geekbang.org/infoq/0e/0e8966939127660cee3f7aa05303721b.png" alt="img"></p>
+<p>另一个好处是，借助操作系统对进程安全的控制，浏览器中渲染进程都是运行在沙盒（sandbox）模式下，站点的代码可以运行在隔离的环境中，保证核心进程的安全。<code>浏览器进程会给每个渲染进程分配资源，但这些渲染进程只能访问被分配的资源，不能访问未被分配的资源。沙盒用于限制子进程（渲染器、插件、GPU等）直接访问系统资源。这有助于保护用户免受不受信任和潜在恶意Web内容的攻击。</code></p>
+<p>虽然多进程的架构优于单进程架构，但由于进程独享自己的私有内存，以渲染进程为例，虽然渲染的站点不同，但工作内容大体相似，为了完成渲染工作它们会在自己的内存中包含相同的功能，例如 V8 引擎（用于解析和运行 Javascript），这意味着这部分相同的功能需要占用每个进程的内存空间。为了节省内存，Chrome 限制了最大进程数，最大进程数取决于硬件的能力，同时<strong>当使用多个页签访问相同的站点时浏览器不会创建新的渲染进程</strong>。</p>
+<p>简单理解就是：如果浏览器是单进程的，某个<code>Tab</code>页崩溃了，就影响了整个浏览器，体验就会很差。同理如果是单进程的，插件崩溃了也会影响整个浏览器;<br>当然，内存等资源消耗也会更大，就像空间换时间一样。</p>
+<h3 id="面向服务的架构"><a href="#面向服务的架构" class="headerlink" title="面向服务的架构"></a>面向服务的架构</h3><p> 2016 年，Chrome 官方团队使用“面向服务的架构”（Services Oriented Architecture，简称 SOA）的思想设计了新的 Chrome 架构。Chrome 将架构从多进程模型转变成面向服务。浏览器将功能以服务的方式提供，以解决多进程架构中的问题。也就是说 Chrome 整体架构会朝向现代操作系统所采用的“面向服务的架构” 方向发展，原来的各种模块会被重构成独立的服务（Service），每个服务（Service）都可以在独立的进程中运行，访问服务（Service）必须使用定义好的接口，通过 IPC 来通信，从而构建一个更内聚、松耦合、易于维护和扩展的系统，更好实现 Chrome 简单、稳定、高速、安全的目标。</p>
+<p>当 Chrome 运行在拥有强大硬件的计算机上时，会将一个服务以多个进程的方式实现，提高稳定性，当计算机硬件资源紧张时，则可以将多个服务放在一个进程中节省资源。</p>
+<p><img src="https://static001.geekbang.org/infoq/72/72ab917eee34ffd4b8bb1352a8f73ad6.png" alt="img"></p>
+<h2 id="浏览器进程"><a href="#浏览器进程" class="headerlink" title="浏览器进程"></a>浏览器进程</h2><p><img src="https://static001.geekbang.org/infoq/40/4006973a23f68ec28402353d48f91a57.png" alt="img"></p>
+<p>浏览器进程负责处理除了渲染外的大部分工作，浏览器进程包括几个线程：</p>
+<ul>
+<li>UI 线程负责绘制工具栏中的按钮、地址栏等。</li>
+<li>网络线程负责从网络中获取数据。</li>
+<li>存储线程负责文件等功能。</li>
+</ul>
+<p>当我们在地址栏中输入一个地址时，浏览器进程中的 UI 线程最先得知这个动作，并开始处理。</p>
+<h3 id="一次访问"><a href="#一次访问" class="headerlink" title="一次访问"></a>一次访问</h3><p>下面我们就从一次常见的访问入手，逐步了解浏览器是如何展示页面的。</p>
+<p><img src="/2021/06/03/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%BA%E5%88%B6/001.png" alt="示例"></p>
+<h4 id="Step-1：输入处理"><a href="#Step-1：输入处理" class="headerlink" title="Step 1：输入处理"></a>Step 1：输入处理</h4><p>当我们在地址栏中输入时，UI 线程会先判断我们输入的内容是要搜索的内容还是要访问一个站点，因为地址栏同时也是一个搜索框。</p>
+<p><img src="https://static001.geekbang.org/infoq/d6/d619ac67749e633ae020812aa0b09bdd.png" alt="img"></p>
+<h4 id="Step-2：访问开始"><a href="#Step-2：访问开始" class="headerlink" title="Step 2：访问开始"></a>Step 2：访问开始</h4><p>当我们按下回车开始访问时，UI 线程将借助网络线程访问站点资源. 浏览器页签的标题上会出现加载中的图标，同时网络线程会根据适当的网络协议为这次请求建立连接。</p>
+<p><img src="https://static001.geekbang.org/infoq/74/749ccda4aca068ed34465407973dc3f9.png" alt="img"></p>
+<p>若当服务器返回给浏览器重定向请求时，网络线程会通知 UI 线程需要重定向，然后会以新的地址做开始请求资源。</p>
+<h4 id="Step-3：处理响应数据"><a href="#Step-3：处理响应数据" class="headerlink" title="Step 3：处理响应数据"></a>Step 3：处理响应数据</h4><p><img src="https://static001.geekbang.org/infoq/a0/a049bd54e903004676c6f75ec11d373b.png" alt="img"></p>
+<p>当网络线程收到来自服务器的数据时，会试图从数据中的前面的一些字节中得到数据的类型（<strong>Content-Type</strong>），以试图了解数据的格式。</p>
+<p>当返回的数据类型是 HTML 时，会将数据传递给渲染进程做进一步的渲染工作。但是如果数据类型是 zip 文件或者其他文件格式时，会将数据传递给下载管理器做进一步的文件预览或者下载工作。</p>
+<p><img src="https://static001.geekbang.org/infoq/b4/b4797a3b5023a9de4ac03ad174e9bd3f.png" alt="img"></p>
+<p>在开始渲染之前，网络线程要先检查数据的安全性，这里也是浏览器保证安全的地方。如果返回的数据来自一些恶意的站点，网络线程会显示警告的页面。同时，Cross Origin Read Blocking(CORB)策略也会确保跨域的敏感数据不会被传递给渲染进程。</p>
+<h4 id="Step-4：渲染过程"><a href="#Step-4：渲染过程" class="headerlink" title="Step 4：渲染过程"></a>Step 4：渲染过程</h4><p>当所有的检查结束后，网络线程确信浏览器可以访问站点时，网络线程通知 UI 线程数据已经准备好了。UI 线程会根据当前的站点找到一个渲染进程完成接下来的渲染工作。</p>
+<p><img src="https://static001.geekbang.org/infoq/32/320ebdce97d9fb29329fd47c0c5f0c07.png" alt="img"></p>
+<p>在第二步，UI 线程将请求地址传递给网络线程时，UI 线程就已经知道了要访问的站点。此时 UI 线程就可以开始查找或启动一个渲染进程，这个动作与让网络线程下载数据是同时的。如果网络线程按照预期获取到数据，则渲染进程就已经可以开始渲染了，这个动作减少了从网络线程开始请求数据到渲染进程可以开始渲染页面的时间。当然，如果出现重定向的请求时，提前初始化的渲染进程可能就不会被使用了，但相比正常访问站点的场景，重定向往往是少数，在实际工作中，也需要根据特定的场景给出特定的方案。</p>
+<h4 id="Step-5：提交访问"><a href="#Step-5：提交访问" class="headerlink" title="Step 5：提交访问"></a>Step 5：提交访问</h4><p>经历前面的步骤，数据和渲染进程都已经准备好了。浏览器进程会通过 IPC 向渲染进程提交这次访问，同时也会保证渲染进程可以通过网络线程继续获取数据。一旦浏览器进程收到来自渲染进程的确认完毕的消息，就意味着访问的过程结束了，文档渲染的过程就开始了。</p>
+<p>这时，地址栏显示出表明安全的图标，同时显示出站点的信息。访问历史中也会加入当前的站点信息。为了能恢复访问历史信息，当页签或窗口被关闭时，访问历史的信息会被存储在硬盘中。</p>
+<p><img src="https://static001.geekbang.org/infoq/b9/b9882cfdfbc700b2698116669bf40d4e.png" alt="img"></p>
+<h4 id="Extra-Step：加载完毕"><a href="#Extra-Step：加载完毕" class="headerlink" title="Extra Step：加载完毕"></a>Extra Step：加载完毕</h4><p>当访问被提交给渲染进程，渲染进程会继续加载页面资源并且渲染页面。当渲染进程”结束”渲染工作，会给浏览器进程发送消息，这个消息会在页面中所有子页面（frame）结束加载后发出，也就是 onLoad 事件触发后发送。当收到”结束”消息后，UI 线程会隐藏页签标题上的加载状态图标，表明页面加载完毕。</p>
+<p>但这里”结束”并不意味着所有的加载工作都结束了，因为可能还有 JavaScript 在加载额外的资源或者渲染新的视图。</p>
+<p><img src="https://static001.geekbang.org/infoq/b9/b93f199ad2138be6e445d1ceb4416033.png" alt="img"></p>
+<p>访问不同的站点</p>
+<p>一次普通的访问到此就结束了。当我们输入另外一个地址时，浏览器进程会重复上面的过程。但是在开始新的访问前，会确认当前的站点是否关心<code>beforeunload</code>事件。<code>当浏览器窗口关闭或者刷新时，会触发beforeunload事件。当前页面不会直接关闭，可以点击确定按钮关闭或刷新，也可以取消关闭或刷新</code>，<code>beforeunload</code>事件可以提醒用户是否要访问新的站点或者关闭页签，如果用户拒绝则新的访问或关闭会被阻止。</p>
+<p>由于所有的包括渲染、运行 Javascript 的工作都发生在渲染进程中，浏览器进程需要在新的访问开始前与渲染进程确认当前的站点是否关心<code>unload</code>，<code>当文档或一个子资源正在被卸载时, 触发 unload事件</code>。</p>
+<p><img src="https://static001.geekbang.org/infoq/71/71402d5b3a3f7d5629a242727e606079.png" alt="img"></p>
+<p>如果一次访问是从一个渲染进程中发起的，例如用户点击一个链接或者运行 JavaScript 代码<code>location = &#39;http://newsite.com&#39;</code>时，渲染进程首先检查<code>beforeunload</code>。然后再执行和浏览器进程初始化访问同样的步骤，只不过区别在于这样的访问请求是由渲染进程向浏览器进程发起的。</p>
+<p>当新的站点请求被创建时，一个独立的渲染进程将被用于处理这个请求。为了支持像<code>unload</code>的事件触发，老的渲染进程需要保持住当前的状态。</p>
+<p><img src="https://static001.geekbang.org/infoq/e0/e074926b6b24cae624f6c1c906c16616.png" alt="img"></p>
+<h3 id="Service-worker"><a href="#Service-worker" class="headerlink" title="Service worker"></a>Service worker</h3><p>Service worker 是一种可以 web 开发者控制缓存的技术。如果 Service worker 被实现成从本地存储获取数据时，那么原本的请求就不会被浏览器发送给服务器了。</p>
+<p>值得注意的是，Service worker 中的代码是运行在渲染进程中的。当访问开始时，网络线程会根据域名检查是否有 Service worker 会处理当前地址的请求，如果有，则 UI 线程会找到对应的渲染进程去执行 Service worker 的代码，而 Service worker 可以让开发者决定这个请求是从本地存储还是从网络中获取数据。</p>
+<p><img src="https://static001.geekbang.org/infoq/8c/8c45c55d238b901239d0eb4bd40f2892.png" alt="img"></p>
+<p><img src="https://static001.geekbang.org/infoq/fd/fdeaee16c665e81bc59f42122080916f.png" alt="img"></p>
+<h3 id="访问预加载"><a href="#访问预加载" class="headerlink" title="访问预加载"></a>访问预加载</h3><p>如果 Service worker 最终决定要从网络中获取数据时，我们会发现这种跨进程的通信会造成一些延迟。Navigation Preload是一种可以在 Service worker 启动的同时加载资源的优化机制。借助特殊的请求头，服务器可以决定返回什么样的内容给浏览器。</p>
+<p><img src="https://static001.geekbang.org/infoq/21/212631fa2520d730f17b0461ddae71d6.png" alt="img"></p>
+<h2 id="渲染进程（浏览器内核）"><a href="#渲染进程（浏览器内核）" class="headerlink" title="渲染进程（浏览器内核）"></a>渲染进程（浏览器内核）</h2><p>浏览器最重要的部分是浏览器的内核。浏览器内核是浏览器的核心，也称“渲染引擎”，用来解释网页语法并渲染到网页上。浏览器内核决定了浏览器该如何显示网页内容以及页面的格式信息。不同的浏览器内核对网页的语法解释也不同，因此网页开发者需要在不同内核的浏览器中测试网页的渲染效果。</p>
+<p>现在我们来介绍一下目前比较常见的浏览器及所使用的内核。</p>
+<ul>
+<li><p>Chrome浏览器：</p>
+<p>Chrome浏览器是google旗下的浏览器。Chrome浏览器至发布以来一直讲究简洁、快速、安全，所以Chrome浏览器到现在一直受人追捧。最开始Chrome采用webkit作为浏览器内核，直到2013年，google宣布不再使用苹果的webkit内核，开始使用webkit的分支内核Blink。</p>
+</li>
+<li><p>Firefox浏览器：</p>
+<p>Firefox浏览器使Mozilla公司旗下浏览器，也是刚才提到的网景公司后来的浏览器。网景被收购后，网景人员创办了Mozilla基金会，这是一个非盈利组织，他们在2004年推出自己的浏览器Firefox。Firefox采用Gecko作为内核。Gecko是一个开源的项目，代码完全公开，因此受到很多人的青睐。Firefox的问世加快了第二次浏览器大战的开始。第二次浏览器大战与第一次二元鼎力的局面不同，这一次的特点就是百家争鸣，也自此打破了IE浏览器从98年网景被收购后独步浏览器市场的局面。</p>
+</li>
+<li><p>Safari浏览器：</p>
+<p>第二次浏览器大战是从苹果公司发布Safari浏览器开始的。2003年，苹果公司在苹果手机上开发Safari浏览器，利用自己得天独厚的手机市场份额使Safari浏览器迅速成为世界主流浏览器。Safari是最早使用webkit内核的浏览器也是现在苹果默认的浏览器。</p>
+</li>
+<li><p>Opera浏览器：</p>
+<p>Opera是挪威Opera Software ASA公司旗下的浏览器。1995年，opera公司发布第一版Opera浏览器，使用自己研发的Presto内核。当时opera公司的开发团队不断完善Presto内核，使Opera浏览器一度成为顶级浏览器。直到2016年奇虎360和昆仑万维收购了Oprea浏览器，从此也丢弃了强大的Presto内核，改用当时Google开源的webkit内核。后来Opera浏览器跟随Google将浏览器内核改为Blink内核。自此Presto内核也淡出了互联网市场。</p>
+</li>
+<li><p>IE浏览器：</p>
+<p>IE是微软公司旗下浏览器，是目国内用户量最多的浏览器。IE诞生于1994年，当时微软为了对抗市场份额占据将近百分之九十的网景Netscape Navigator，于是在Windows中开发了自己的浏览器Internet Explorer，自此也引发了第一次浏览器大战。结果可想而知，微软大获全胜，网景不得不将自己卖给AOL公司。但实际上事情并没有结束，网景后来开发了风靡一时的Firefox火狐，至今Firefox也成为世界五大浏览器之一。</p>
+<p>1996年，微软从Spyglass手里拿到Spyglass Mosaic的源代码和授权，开始开发自己的浏览器IE。后来，微软以IE和Windows捆绑的模式不断向市场扩展份额，使IE成为市场的绝对主流。现在装了Windows系统的电脑基本无法卸载IE。</p>
+</li>
+</ul>
+<p>以上是五大浏览器的简介，接下来是四大内核。在介绍五大浏览器的同时也已经顺便介绍了四大内核。四大内核分别是：Trident（也称IE内核）、webkit、Blink、Gecko。五大浏览器采用的都是单内核，而随着浏览器的发展现在也出现了双内核。像360浏览器、QQ浏览器都是采用双内核。<br> 作为前端开发，熟悉四大内核是非常有必要的。四大内核的解析不同使网页渲染效果更具多样化。下面总结一下各常用浏览器所使用的内核。<br> 1、IE浏览器内核：Trident内核，也是俗称的IE内核；<br> 2、Chrome浏览器内核：统称为Chromium内核或Chrome内核，以前是Webkit内核，现在是Blink内核；<br> 3、Firefox浏览器内核：Gecko内核，俗称Firefox内核；<br> 4、Safari浏览器内核：Webkit内核；<br> 5、Opera浏览器内核：最初是自己的Presto内核，后来是Webkit，现在是Blink内核；<br> 6、360浏览器、猎豹浏览器内核：IE+Chrome双内核；<br> 7、搜狗、遨游、QQ浏览器内核：Trident（兼容模式）+Webkit（高速模式）；<br> 8、百度浏览器、世界之窗内核：IE内核；<br> 9、2345浏览器内核：以前是IE内核，现在也是IE+Chrome双内核；</p>
+<p>介绍完五大主流浏览器及四大内核，那么浏览器内核，也就是渲染进程具体都做了些什么呢？为什么称之为浏览器最重要的部分？</p>
+<p>上面提到过，<strong>浏览器是多进程的</strong>，<strong>而浏览器的渲染进程是多线程的</strong></p>
+<p><img src="/2021/06/03/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%BA%E5%88%B6/002.png" alt="示例"></p>
+<h3 id="GUI渲染线程"><a href="#GUI渲染线程" class="headerlink" title="GUI渲染线程"></a><code>GUI</code>渲染线程</h3><ul>
+<li>负责渲染浏览器界面，解析<code>HTML</code>,<code>CSS</code>,构建<code>DOM</code>树和<code>RenderObject</code>树，布局和绘制等。</li>
+<li>当界面需要重绘或由于某种操作引发回流时，该线程就会执行。</li>
+<li>注意，**<code>GUI</code>渲染线程与<code>JS</code>引擎线程是互斥的**，当<code>JS</code>引擎执行时<code>GUI</code>线程会被挂起（相当于冻结了）,<code>GUI</code>更新会被保存在一个队列中等到<code>JS</code>引擎空闲时立即被执行。</li>
+</ul>
+<h3 id="JS引擎线程"><a href="#JS引擎线程" class="headerlink" title="JS引擎线程"></a><code>JS</code>引擎线程</h3><ul>
+<li>也称为<code>JS</code>内核，负责处理<code>JavaScript</code>脚本程序。（例如<code>V8</code> 引擎）。</li>
+<li><code>JS</code>引擎线程负责解析<code>JavaScript</code>脚本，运行代码。</li>
+<li><code>JS</code>引擎一直等待着任务队列中任务的到来，然后加以处理，一个<code>Tab</code>页（<code>render</code>进程）中无论什么时候都只有一个<code>JS</code>线程在运行<code>JS</code>程序。</li>
+<li>同样注意，**<code>GUI</code>渲染线程与<code>JS</code>引擎线程是互斥的**，所以如果<code>JS</code>执行的时间过长，这样就会造成页面的渲染不连贯，导致页面渲染加载阻塞。</li>
+</ul>
+<h3 id="事件触发线程"><a href="#事件触发线程" class="headerlink" title="事件触发线程"></a>事件触发线程</h3><ul>
+<li>归属于浏览器而不是<code>JS</code>引擎，用来控制事件循环（可以理解成<code>JS</code>引擎自己都忙不过来，需要浏览器另开线程协助）。</li>
+<li>当<code>JS</code>引擎执行代码块如<code>setTimeout</code>时（也可来自浏览器内核的其它线程，如鼠标点击，<code>AJAX</code>异步请求等），会将对应任务添加到事件线程中。</li>
+<li>当对应的事件符合触发条件被触发时，该线程会把事件添加到待处理队列的队尾，等待<code>JS</code>引擎的处理。</li>
+<li>注意，由于<code>JS</code>的单线程关系，所以这些待处理队列中的事件都得排队等待<code>JS</code>引擎处理（当<code>JS</code>引擎空闲时才会去执行）。</li>
+</ul>
+<h3 id="定时触发器线程"><a href="#定时触发器线程" class="headerlink" title="定时触发器线程"></a>定时触发器线程</h3><ul>
+<li>传说中的<code>setTimeout</code>和<code>setInterval</code>所在的线程</li>
+<li>浏览器定时计数器并不是由<code>JavaScript</code>引擎计数的，（因为<code>JavaScript</code>引擎是单线程的，如果处于阻塞线程状态就会影响计时的准确）</li>
+<li>因此通过单独线程来计时并触发定时（计时完毕后，添加到事件队列中，等待<code>JS</code>引擎空闲后执行）</li>
+<li>注意，<code>W3C</code>在<code>HTML</code>标准中规定，规定要求<code>setTimeout</code>中低于<code>4ms</code>的时间间隔算为<code>4ms</code>。</li>
+</ul>
+<h3 id="异步http请求线程"><a href="#异步http请求线程" class="headerlink" title="异步http请求线程"></a>异步<code>http</code>请求线程</h3><ul>
+<li>将检测到状态变更时，如果设置有回调函数，异步线程就产生状态变更事件，将这个回调再放入事件队列中，再由<code>JavaScript</code>引擎执行</li>
+</ul>
+<h3 id="渲染进程渲染页面的内容"><a href="#渲染进程渲染页面的内容" class="headerlink" title="渲染进程渲染页面的内容"></a>渲染进程渲染页面的内容</h3><p>渲染进程最重要的工作就是将 HTML、CSS和 Javascript 代码转换成一个可以与用户产生交互的页面。</p>
+<p><img src="https://static001.geekbang.org/infoq/bd/bdfa66a4ef1fbd2805797bc4cd90f8d8.png" alt="img"></p>
+<h3 id="解析过程"><a href="#解析过程" class="headerlink" title="解析过程"></a>解析过程</h3><p>关键渲染路径，指的是浏览器从请求HTML，CSS，JavaScript文件开始，到将它们最终以像素输出到屏幕上这一过程中几个关键的步骤：</p>
+<p>1.构建DOM</p>
+<ul>
+<li>将HTML解析成许多Tokens（此token非彼token）</li>
+<li>将Tokens解析成object</li>
+<li>将object组合成为一个DOM树</li>
+</ul>
+<p>2.构建CSSOM</p>
+<ul>
+<li>解析CSS文件，并构建出一个CSSOM树（过程类似于DOM构建）</li>
+</ul>
+<p>3.构建Render Tree</p>
+<ul>
+<li>结合DOM和CSSOM构建出一棵Render Tree</li>
+</ul>
+<p>4.Layout</p>
+<ul>
+<li>计算出Render Tree每个节点的具体位置</li>
+</ul>
+<p>5.Paint</p>
+<ul>
+<li>将Render tree转换成像素，显示在屏幕上</li>
+</ul>
+<p><strong>注意</strong>：上面的过程并非依次进行，而是存在一定的交叉</p>
+<p>下面的主要介绍渲染进程如何将从网络线程中获取的文本转化成图像的过程。</p>
+<p><img src="/2021/06/03/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%BA%E5%88%B6/003.png" alt="示例"></p>
+<p>浏览器整个流程如上图所示：</p>
+<ol>
+<li>当用户输入一个URL时，浏览器就会向服务器发出一个请求，请求URL对应的资源</li>
+<li>接受到服务器的响应内容后，浏览器的HTML解析器，会将HTML文件解析成一棵DOM树，DOM树的构建是一个深度遍历的过程，当前节点的所有子节点都构建完成以后，才会去构建当前节点的下一个兄弟节点。</li>
+<li>将CSS解析成CSSOM树（CSS Rule Tree）</li>
+<li>根据DOM树和CSSOM树，来构建Render Tree（渲染树），注意渲染树并不等于DOM树，因为一些像head或display:none的东西，就没有必要放在渲染树中了。</li>
+<li>有了Render Tree，浏览器已经能知道网页中有哪些节点，各个节点的CSS定义，以及它们的从属关系，下一步操作就是Layout,顾名思义，就是计算出每个节点在屏幕中的位置。</li>
+<li>Layout后，浏览器已经知道哪些节点要显示，每个节点的CSS属性是什么，每个节点在屏幕中的位置是哪里，就进入了最后一步painting，按照算出来的规则，通过显卡，把内容画到屏幕上。</li>
+</ol>
+<h4 id="DOM-的创建"><a href="#DOM-的创建" class="headerlink" title="DOM 的创建"></a>DOM 的创建</h4><p>当渲染进程接收到来自浏览器进程提交访问的消息后就开始接受HTML数据，用户请求的HTML文本(text/html)通过浏览器的网络层到达渲染引擎后，渲染工作开始。每次通常渲染不会超过8K的数据块，并且将其转化成<strong>Document Object Model（DOM）</strong>。</p>
+<p>DOM 是一种浏览器内部用于表达页面结构的数据，同时也为 Web 开发者提供了操作页面元素的接口，让 web 开发者可以在 Javascript 代码中获取和操作页面中的元素。</p>
+<p>将 HTML 文本转化成 DOM 的标准被<a target="_blank" rel="noopener" href="https://html.spec.whatwg.org/">HTML Standard</a>定义。我们会发现在转化过程中浏览器从来不会抛出异常，类似关闭标签的丢失，开始、关闭标签匹配错误等等。这是因为 HTML 标准中定义了要静默的处理这些错误，如果对此感兴趣可以阅读<a target="_blank" rel="noopener" href="https://html.spec.whatwg.org/multipage/parsing.html#an-introduction-to-error-handling-and-strange-cases-in-the-parser">An introduction to error handling and strange cases in the parser</a>。</p>
+<p>具体到DOM树的构建，如下图：</p>
+<p><img src="/2021/06/03/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%BA%E5%88%B6/004.png" alt="示例"></p>
+<p>1、当服务器返回一个HTML文件给浏览器的时候，浏览器接受到的是一些字节数据。</p>
+<p>2、然后浏览器根据HTTP响应中的编码方式（通过是UTF8），解析字节数据，得到一些字符。如果这个时候编码方式跟文件的字节编码不一致，便会出现乱码。所以我们通过使用&lt;meta http-equiv=”content-type”content=”text/html;charset=utf-8”&gt;来告诉浏览器我们页面使用的是什么编码。</p>
+<p>3、这个时候，浏览器再根据DTD（<code>DTD，即文档类型定义，作用是定义XML文档的合法构建模块。它使用一系列的合法元素来定义文档结构。</code>）中的对元素（标签）的定义，对这些接受到的字符进行语义化(token)。DTD常见的有严格、过渡、框架和HTML5三种，负责告诉浏览器，哪些字符是有意义的，哪些字符是无意义的。</p>
+<p>4、接着，浏览器再使用这些语义块(token)创建对象，形成一个个节点。</p>
+<p>5、然后HTML解析器就会从HTML文件的头部到尾部，一个个地遍历这些节点。当这些节点是普通节点的话，HTML解析器就会将这些节点加入到DOM树中。当这些节点是JS代码的话，HTML解析器就会将控制权交给JS解析器。如果这些节点是CSS代码的话，HTML解析器就会将控制权交给CSS解析器。不过，当外联的JS代码和CSS代码还没从服务器传到浏览器的时候，这个时候如果DOM树上有可视元素的话，浏览器通常会选择在这个时候，将一些内容提前渲染到屏幕上来。</p>
+<p>6、当HTML解析器读到最后一个节点的时候，整个DOM树也构建完成了，这个时候就会触发domContentloaded事件。而很多JS库（像JQ）通常会在这个时候有所反应的。</p>
+<p>至此，DOM树就全部构建完成了。</p>
+<p><strong>构建DOM和CSSOM</strong></p>
+<p>DOM 和 CSSOM 都是以”Bytes → characters → tokens → nodes → object model” 这样的方式生成最终的数据。如下图所示：</p>
+<p><img src="/2021/06/03/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%BA%E5%88%B6/005.png" alt="示例"></p>
+<p>而构建出来的CSSOM是这样的：</p>
+<p><img src="/2021/06/03/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%BA%E5%88%B6/006.png" alt="示例"></p>
+<p>需要注意的是，上面并不是一颗完整的CSSOM树，文档有一些默认的CSS样式，称作user agent styles，上面只展示了我们覆盖的部分。</p>
+<p>如果是外部样式，CSSOM的构建必须要获得一份完整的CSS文件，而不像DOM的构建是一个循序渐进的过程。因为CSS文件中包含大量的样式，后面的样式会覆盖前面的样式，如果我们提前就构建CSSOM，可能会得到错误的结果。</p>
+<p><strong>构建Render Tree</strong></p>
+<p>浏览器使用DOM和CSSOM构建出Render Tree。此时不像构建DOM一样把所有节点构建出来，浏览器只构建需要在屏幕上显示的部分，因此像<code>&lt;head&gt;</code>，<code>&lt;meta&gt;</code>这些标签就无需构建了。同时，对于<code>display: none</code>的元素，也无需构建。<code>display: none</code>告诉浏览器这个元素无需出现在Render Tree中，但是<code>visibility: hidden</code>只是隐藏了这个元素，但是元素还占空间，会影响到后面的Layout, 因此仍然需要出现在Render Tree中。</p>
+<p><img src="/2021/06/03/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%BA%E5%88%B6/007.png" alt="示例"></p>
+<p>Render Tree的构建过程遵循以下步骤：</p>
+<ol>
+<li>浏览器从DOM树开始，遍历每一个“可见”节点。</li>
+<li>对于每一个”可见”节点，在CSSOM上找到匹配的样式并应用。</li>
+<li>生成Render Tree。</li>
+</ol>
+<p><strong>注意：构建Render Tree这一部分对应后面的Layout过程。</strong></p>
+<h4 id="额外资源的加载"><a href="#额外资源的加载" class="headerlink" title="额外资源的加载"></a>额外资源的加载</h4><p>一个网站通常还会使用类似图片，样式文件和 JavaScript 代码等额外的资源。这些资源也需要从网络或缓存中获取。主线程在转化 HTML 的过程中理应挨个加载它们，但是为了提高效率，预加载扫描（Preload Scanner）与转换过程会同时运行着。当预加载扫描在分析器分析 HTML 过程中发现了类似 img 或 link 这样的标签时，就会发送请求给浏览器进程的网络线程，而主线程会根据这些额外资源是否会阻塞转化过程而决定是否等待资源加载完毕。</p>
+<p><img src="https://static001.geekbang.org/infoq/fa/fa689d6a31b8687522c58774c8d9d064.png" alt="img"></p>
+<h4 id="JavaScript-会阻塞转化过程"><a href="#JavaScript-会阻塞转化过程" class="headerlink" title="JavaScript 会阻塞转化过程"></a>JavaScript 会阻塞转化过程</h4><p>当 HTML 分析器发现<code>&lt;script&gt;</code>标签时，会暂停接下来的 HTML 转化工作，然后加载、解析并且运行 Javascript 代码。因为在 Javascript 代码中可能会使用类似<code>document.write</code>这样的 API 去改变 DOM 的结构。这就是为什么 HTML 分析器必须等待 Javascript 代码运行结束才能继续分析的原因，也是为什么JavaScript文件在写在底部body标签前的原因。</p>
+<h4 id="告诉浏览器要如何加载资源"><a href="#告诉浏览器要如何加载资源" class="headerlink" title="告诉浏览器要如何加载资源"></a>告诉浏览器要如何加载资源</h4><p>如果我们的 Javascript 代码并不需要改变 DOM，可以为<code>&lt;script&gt;</code>标签添加<code>async</code>或<code>defer</code>属性，这样浏览器就会异步的加载这些资源并且不会阻塞 HTML 转化过程。<strong>如果 script 标签是由 JavaScript 代码创建的，标签的 async 属性会默认为 true。</strong>此外我们也可以使用一些预加载技术，比如<code>&lt;link ref=&quot;preload&quot;&gt;</code>来通知浏览器这些资源需要越快下载越好。</p>
+<h4 id="样式计算（Style-calculation）"><a href="#样式计算（Style-calculation）" class="headerlink" title="样式计算（Style calculation）"></a>样式计算（Style calculation）</h4><p>对于展示一个页面，光有 DOM 是不够的，因为我们还需要样式来让页面变得更美观。主线程会解析样式（CSS）并决定每个 DOM 元素的样式。这些样式取决于 CSS 选择器的范围，在浏览器开发者工具中我们可以看到这些信息。</p>
+<p><img src="https://static001.geekbang.org/infoq/fb/fb7d195814a04c6ed98eab8dbda477c6.png" alt="img"></p>
+<p>即使我们没有给 DOM 指定任何的样式，<code>&lt;h1&gt;</code>标签也会比<code>&lt;h2&gt;</code>标签显示的大。这是因为浏览器为不同的标签内置了不同的样式。</p>
+<h4 id="布局（layout）"><a href="#布局（layout）" class="headerlink" title="布局（layout）"></a>布局（layout）</h4><p>完成了样式计算工作后，渲染进程已经知道了 DOM 的结构和每个节点的样式，但是依然不足以渲染一个页面。想象一下，让你在电话中向朋友描述一张图：“图中有一个大红色圆和一个小的、蓝色的方块”是不足以让朋友知道这张图到底是什么样的。</p>
+<p><img src="https://static001.geekbang.org/infoq/06/0658494542e14f7db66b913c02c03202.png" alt="img"></p>
+<p>布局是为元素指定几何信息的过程。主线程遍历 DOM 结构中的元素及其样式，同时创建出带有坐标和元素尺寸信息的布局树（Layout tree）。布局树的结构与 DOM 树的结构十分相似，但只包含将会在页面中显示的元素。<strong>当一个元素的样式被设置成 display: none 时，元素就不会出现在布局树中，但那些样式被设置成 visiblility：hidden 的元素会出现在布局树中。</strong>相似的，当我们使用一个包含内容的伪元素（例如<code>p::before &#123; content: &#39;Hi!&#39; &#125;</code>）时，元素会出现在布局树中即使这个元素不存在于 DOM 树中，这也是为什么我们<strong>使用 DOM 提供的 API 无法获取伪元素</strong>的原因。</p>
+<p><img src="https://static001.geekbang.org/infoq/0c/0c1de85206f0d177f93a70931a0f8272.png" alt="img"></p>
+<p>描述页面布局信息是一项具有挑战性的工作，即使在只有块元素的页面中也必须要考虑字体的大小和在哪里换行，因为在计算下一个元素的位置时需要知道上一个元素的尺寸和形状。</p>
+<p><strong>这里还要提到两个概念，一个是回流（Reflow），另一个是重绘（Repaint），这两个部分都属于Render tree阶段</strong></p>
+<ul>
+<li>Repaint ——改变某个元素的背景色、文字颜色、边框颜色等等不影响它周围或内部布局的属性时，屏幕的一部分要重画，但是元素的几何尺寸没有变。</li>
+<li>Reflow ——元件的几何尺寸变了，我们需要重新验证并计算Render Tree。是Render Tree的一部分或全部发生了变化。</li>
+<li>Reflow 几乎是无法避免的。现在界面上流行的一些效果，比如树状目录的折叠、展开（实质上是元素的显 示与隐藏）等，都将引起浏览器的 Reflow。鼠标滑过、点击……只要这些行为引起了页面上某些元素的占位面积、定位方式、边距等属性的变化，都会引起它内部、周围甚至整个页面的重新渲 染。通常我们都无法预估浏览器到底会 reflow 哪一部分的代码，它们都彼此相互影响着。<br> 注：display:none会触发reflow，而visibility:hidden只会触发repaint，因为没有发现位置变化。</li>
+<li>所有回流都会干一件事情：根据生成的render tree重新计算所有元素在页面中的位置，所以应该尽可能避免重绘和回流</li>
+</ul>
+<p><strong>回流一定会触发重绘，而重绘不一定会回流</strong></p>
+<h4 id="绘制（Paint）"><a href="#绘制（Paint）" class="headerlink" title="绘制（Paint）"></a>绘制（Paint）</h4><p><img src="https://static001.geekbang.org/infoq/d8/d8fe81b968531c8b3d4767006ea9725d.png" alt="img"></p>
+<p>有了 DOM、样式和布局还是无法完成渲染工作。试想，当我们试图复制一张图画。我们知道图画中元素的尺寸、形状和位置，我们还需要知道绘制这些元素的顺序。</p>
+<p>例如，当一个元素 z-index 属性被设置后，绘制的顺序会导致渲染成错误的结果。</p>
+<p><img src="https://static001.geekbang.org/infoq/11/116fb1ec64e618a7562788911bca8d75.png" alt="img"></p>
+<p>在这个阶段，主线程遍历布局树并创建绘制记录，绘制记录是一系列由绘制步骤组成的流程，例如先绘制背景，然后是文字，然后是形状。</p>
+<p><img src="https://static001.geekbang.org/infoq/a6/a68fd128fc59b9b2bed3511fcf223c94.png" alt="img"></p>
+<h4 id="合成（Compositing）"><a href="#合成（Compositing）" class="headerlink" title="合成（Compositing）"></a>合成（Compositing）</h4><p>现在，浏览器已经知道了文档结构、每一个元素的样式，元素的几何信息，绘制的顺序。将这些信息转化成屏幕上像素的过程叫做光栅化，光栅化是图形学的范畴。</p>
+<p><img src="https://static001.geekbang.org/infoq/9e/9ed512afc63c664458faf1bd42247cc0.gif" alt="img"></p>
+<p>传统的做法是将可视区域的内容进行光栅化。随着用户滚动页面，不断的光栅化更多的区域。然而对于现代浏览器，有着更复杂的的过程，这个过程被称做合成。</p>
+<p><img src="https://static001.geekbang.org/infoq/ae/ae1b6d19e8aeb45841f04bbfa72760dd.gif" alt="img"></p>
+<p>合成是一种将页面拆分成多层的技术，合成线程可以将各个层在不同线程中光栅化，再组合成一个页面。当滚动时，如果层已经被光栅化，则会使用已经存在的层合成新的帧，动画则可以通过移动层来实现。</p>
+<h4 id="层（Layer）"><a href="#层（Layer）" class="headerlink" title="层（Layer）"></a>层（Layer）</h4><p>为了决定层包含哪些元素，主线程需要遍历布局树以找到需要生成的部分。对开发者来说，当某一部分需要用独立的层渲染，我们可以使用 css 属性<code>will-change</code>让浏览器创建层，关于浏览器如何生成层的标准可自行查阅。</p>
+<p><img src="https://static001.geekbang.org/infoq/b0/b08901dee7af151982f600e6a7a6ba43.png" alt="img"></p>
+<p>虽然通过分层可以优化浏览器性能，但并不意味着应该给每个元素一个层，过多的层反而影响性能，所以在层的划分上应该具体形况具体分析。</p>
+<h4 id="栅格线程与合成线程"><a href="#栅格线程与合成线程" class="headerlink" title="栅格线程与合成线程"></a>栅格线程与合成线程</h4><p>当布局树和绘制顺序确定以后，主线程会将这些信息提交给合成线程。合成线程会光栅化各个层。一个层包含的内容可能是一个完整的页面，也可能是页面的部分，所以合成线程将层拆分成许多块，并将它们发送给栅格线程。栅格线程光栅化这些块并将它们存储在 GPU 缓存中。</p>
+<p><img src="https://static001.geekbang.org/infoq/37/371b5fa654d59f0c8ccb2f4f0658c20a.png" alt="img"></p>
+<p>合成线程可以决定栅格线程光栅块的优先级，这样可以保证用户能看到的部分可以先被光栅化。一个层也会包含多种块以支持类似缩放这样的功能。</p>
+<p>当块被光栅化后，合成线程会使用 draw quads 收集这些信息并创建合成帧（Compositor frame）。</p>
+<p><code>Draw quads：存储在缓存中，包含类似块位置这样的信息，用于描述如何使用块合成页面。</code></p>
+<p><code>Compositor frame：用于存储表现页面一帧中包含哪些 Draw quads 的集合。</code></p>
+<p>然后一个合成帧被提交给浏览器进程。这时如果浏览器 UI 有变化，或者插件的 UI 有变化时，另一个合成帧就会被创建出来。所以每当有交互发生时，合成线程就会创建更多的合成帧然后通过 GPU 将新的部分渲染出来。</p>
+<p><img src="https://static001.geekbang.org/infoq/39/397d4949099dd6d1aaffcb55e8678e37.png" alt="img"></p>
+<p>合成的好处在于其独立于主线程。合成线程不需要等待样式计算和 Javascript 代码的运行。这也是为什么合成更适合优化交互性能，但如果布局或者绘制需要重新计算则主线程是必须要参与的。</p>
+<p>本质上，浏览器的渲染过程就是将文本转换成图像的过程，而当用户与页面发生交互动作时，则显示新的图像。在这个过程中由渲染进程中的主线程完成计算工作，由合成线程和栅格线程完成图像的绘制工作。而在计算过程中，还有强制布局、重排、重绘等更加细节的概念。</p>
+<h4 id="从浏览器的角度看事件"><a href="#从浏览器的角度看事件" class="headerlink" title="从浏览器的角度看事件"></a>从浏览器的角度看事件</h4><p>当我们听到事件时，通常会联想到在一个文本框中输入或者单击鼠标，但从浏览器的角度看，输入事件意味着所有的用户动作。鼠标滚轮滚动或者屏幕触摸都是输入事件。</p>
+<p>当用户与页面发生交互时，浏览器进程首先接收到事件，然而，浏览器进程只关心事件发生时是在哪个页签中，所以浏览器进程会将事件类型和位置信息等发送给负责当前页签的渲染进程，渲染进程会找到事件发生的元素并且触发事件监听器。</p>
+<p><img src="https://static001.geekbang.org/infoq/7f/7f8581ec78d48302c8ea81f713cdfa56.png" alt="img"></p>
+<h4 id="合成线程对事件的处理"><a href="#合成线程对事件的处理" class="headerlink" title="合成线程对事件的处理"></a>合成线程对事件的处理</h4><p>在前面的章节中，我们知道了合成线程可以通过合成技术合成不同的光栅层优化性能，如果页面并不监听任何事件，合成线程可以完全独立于主线程生成新的合成帧。但如果页面监听了事件呢？</p>
+<p>由于运行 Javascript 是主线程的工作，当页面被合成线程合成过，合成线程会标记那些有事件监听的区域。有了这些信息，当事件发生在响应的区域时，合成线程就会将事件发送给主线程处理。如果在非事件监听区域，则渲染进程直接创建新的帧而不关心主线程。</p>
+<p><img src="https://static001.geekbang.org/infoq/6f/6fda6b7355162ca393787e870630a083.png" alt="img"></p>
+<h4 id="查找事件目标"><a href="#查找事件目标" class="headerlink" title="查找事件目标"></a>查找事件目标</h4><p><img src="https://static001.geekbang.org/infoq/0e/0eb159798080da4adc7ffb76cf184ffa.png" alt="img"></p>
+<p>当渲染线程将事件发送给主线程后，第一件事就是找到事件触发的目标。通过在渲染过程中生成的绘制信息，可以根据坐标找到目标元素。</p>
+<h4 id="减少发送给主线程的事件数量"><a href="#减少发送给主线程的事件数量" class="headerlink" title="减少发送给主线程的事件数量"></a>减少发送给主线程的事件数量</h4><p>为了保证动画的顺畅，需要显示器在每秒刷新 60 次。对于典型的触摸事件由合成线程提交给主线程的事件频率可以达到每秒 60-120 次，对于典型的鼠标事件每秒会发送 100 次。事件发送的频率通常比屏幕刷新频率要高。</p>
+<p>如果类似<code>touchmove</code>这样的事件每秒向主线程发送 120 次可能会造成主线程执行时间过长而影响性能。</p>
+<p><img src="https://static001.geekbang.org/infoq/61/6101cc07df5e744efb2a88208f1d1e52.png" alt="img"></p>
+<p>为了减少发送给主线程的事件数量，Chrome 合并了连续的事件。类似<code>wheel</code>，<code>mousewheel</code>，<code>mousemove</code>，<code>pointermove</code>，<code>touchmove</code>这样的事件会被延迟到下一次<code>requestAnimationFrame</code>前触发。<code>window.requestAnimationFrame() 告诉浏览器——你希望执行一个动画，并且要求浏览器在下次重绘之前调用指定的回调函数更新动画。该方法需要传入一个回调函数作为参数，该回调函数会在浏览器下一次重绘之前执行</code></p>
+<p><img src="https://static001.geekbang.org/infoq/53/53005a8114a736ca071a333946664ffd.png" alt="img"></p>
+<p>而任何的离散事件，类似<code>keydown</code>, <code>keyup</code>, <code>mouseup</code>, <code>mousedown</code>, <code>touchstart</code>和 <code>touchend</code>都会立即被发送给主线程处理。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>浏览器进程做为最重要的进程负责大多数页签外部的工作，包括地址栏显示、网络请求、页签状态管理等。</li>
+<li>不同的渲染进程负责不同的站点渲染工作，渲染进程间彼此独立。</li>
+<li>渲染进程在渲染页面的过程中会通过浏览器进程获取站点资源，只有安全的资源才会被渲染进程接收到。</li>
+<li>渲染进程中主线程负责除了图像生成外绝大多数工作，如何减少主线程上代码的运行是交互性能优化的关键。</li>
+<li>渲染进程中的合成线程和栅格线程负责图像生成，利用分层技术可以优化图像生成的效率。</li>
+<li>当用户与页面发生交互时，事件的传播途径从浏览器进程到渲染进程的合成线程再根据事件监听的区域决定是否要传递给渲染进程的主线程处理。</li>
+</ul>
+<p>参考文章：</p>
+<p><a target="_blank" rel="noopener" href="https://xie.infoq.cn/article/5d36d123bfd1c56688e125ad3">https://xie.infoq.cn/article/5d36d123bfd1c56688e125ad3</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/05eb1b17b298">https://www.jianshu.com/p/05eb1b17b298</a></p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">yuanshan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2021/06/03/浏览器机制/">http://example.com/2021/06/03/浏览器机制/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com">Yuanshan's Studio</a>！</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2021/06/07/%E8%B5%84%E6%BA%90%E6%B1%87%E6%80%BB/"><i class="fa fa-chevron-left">  </i><span>资源汇总</span></a></div><div class="next-post pull-right"><a href="/2021/06/01/%E7%9F%A5%E8%AF%86%E6%A1%86%E6%9E%B6/"><span>知识框架</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(https://seuppcdn01.1x.com/images/user/93d5a195f6171258ef8acf27aaf73838-hd4.jpg)"><div class="layout" id="footer"><div class="copyright">&copy;2021 - 2022 By yuanshan</div><div class="framework-info"><span>驱动 - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="footer_custom_text">🍉🍉🍉欢迎来到我的<a target="_blank" rel="noopener" href="https://yuanshan7.github.io/">个人博客</a>!🍉🍉🍉</div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.0"></script><script src="/js/fancybox.js?version=1.9.0"></script><script src="/js/sidebar.js?version=1.9.0"></script><script src="/js/copy.js?version=1.9.0"></script><script src="/js/fireworks.js?version=1.9.0"></script><script src="/js/transition.js?version=1.9.0"></script><script src="/js/scroll.js?version=1.9.0"></script><script src="/js/head.js?version=1.9.0"></script><script src="/js/search/local-search.js"></script><script id="ribbon" src="/js/third-party/canvas-ribbon.js" size="150" alpha="0.6" zIndex="-1" data-click="false"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>
